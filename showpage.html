@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>    body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #111;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: red;
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+}
+
+.boxdiv{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.boxdiv>div{
+    width: 50%;
+    height: 70%;
+    border: 1px solid red;
+    /* margin: auto; */
+
+}
+.boxdiv>div>img{
+    width: 100%;
+    height: 100%;
+}
+ #searchBox{
+          width: 400px;
+          height: 30px;
+          border: 1px solid white;
+          background-color: #070707;
+          border-radius: 10px;
+          color: white;
+          padding-left: 30px;
+        }
+
+.getbutton{
+    background-color: red;
+}
+.pyement{
+    text-align: center;
+}
+
+#user-info{
+    color: rgb(24, 154, 82);
+    font-weight: bold;
+}
+</style>
+<body>
+     <header class="navbar">
+    <div class="logo">NETFLIX</div>
+
+    <div>
+    <input type="text" name="" id="searchBox" placeholder="Enter your Email Address" oninput="handleSearch()">
+    
+    </div>
+
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Go to Home</a></li>
+        <!-- <li><a href="#movies-section">Movies & Popular</a></li> -->
+        <!-- <li  id="user-info"></li> -->
+        <!-- <li><div class="logoutbutton"> -->
+       <!-- <button onclick="logout()">logout</button> -->
+      
+     </div></li>
+       
+      </ul>
+    </nav>
+  </header>
+  <div class="pyement">
+    <p>Starts at ₹149. Cancel at any time.</p>
+  </div>
+
+  <div class="boxdiv">
+    <div>
+        <img src="https://i.pinimg.com/originals/57/28/ae/5728aef13f51223982c0b8f9d71c0aba.gif" alt="">
+    </div>
+  </div>
+</body>
+</html>

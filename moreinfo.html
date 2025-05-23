@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix Home</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #141414;
+      color: white;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #111;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: red;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+    }
+
+    #searchBox {
+      width: 300px;
+      height: 30px;
+      padding-left: 10px;
+      background-color: black;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .hero {
+      height: 20vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #movies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    #movies div {
+      width: 200px;
+      text-align: center;
+        border: 2px solid black;
+        border-radius: 20px;
+      height: 300px;
+
+    }
+
+
+    #movies img {
+      width: 100%;
+      height: 300px;
+      border-radius: 10px;
+    
+    }
+     #movies img:hover {
+            transform: scale(1.1);
+            
+            transition: transform 0.3s;
+        }
+
+    .buttons {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #be4444;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    #user-info{
+    color: rgb(24, 154, 82);
+    font-weight: bold;
+}
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">NETFLIX</div>
+<div>
+
+    <input type="text" name="" id="searchBox" placeholder="Search movie" oninput="handleSearch()">
+    <button onclick="datafetch()">Search</button>
+</div>
+
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <!-- <li><a href="#movies-section">Movies & Popular</a></li> -->
+        <li  id="user-info"></li>
+        <li><div class="logoutbutton">
+       <button onclick="logout()">logout</button>
+      
+     </div></li>
+       
+      </ul>
+    </nav>
+  </header>
+  <section class="hero">
+    <h1>All Movie Search</h1>
+  </section>
+
+  <section id="movies"></section>
+
+  <div class="buttons">
+    <button onclick="prevPage()">Prev Page</button>
+    <button onclick="nextPage()">Next Page</button>
+  </div>
+
+ 
+
+</body>
+</html>
+
+<script>
+  // Firebase config and logout
+  const firebaseConfig = {
+    apiKey: "AIzaSyCLWpw6JTkQK9QdbCIwh-6o39G_YGqFjZo",
+    authDomain: "auth-a91f9.firebaseapp.com",
+    projectId: "auth-a91f9",
+    storageBucket: "auth-a91f9.appspot.com",
+    messagingSenderId: "1073511300098",
+    appId: "1:1073511300098:web:37bda108fcbcf0fd43bb1b"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('user-info').innerText = " " + user.email.split("@")[0].toUpperCase();
+    } else {
+      window.location.href = "Nindex.html";
+    }
+  });
+
+  function logout() {
+    auth.signOut();
+  }
+
+  // Movies Pagination and Search
+    let products = [];
+    let currentPage = 1;
+    const productsPerPage = 8;
+
+    function datafetch() {
+      const search = document.getElementById("searchBox").value;
+      if (!search) {
+        alert("Please enter a movie name.");
+        return;
+      }
+
+      fetch(`https://www.omdbapi.com/?apikey=ecb862c1&s=${search}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.Search) {
+            products = data.Search;
+            currentPage = 1;
+            displayMovies();
+          } else {
+            document.getElementById("movies").innerHTML = "<h2>No movies found.</h2>";
+            products = [];
+          }
+        });
+    }
+
+    function displayMovies() {
+      const start = (currentPage - 1) * productsPerPage;
+      const end = start + productsPerPage;
+      const paginatedMovies = products.slice(start, end);
+      const movieContainer = document.getElementById("movies");
+      movieContainer.innerHTML = "";
+
+      paginatedMovies.forEach((movie) => {
+        const div = document.createElement("div");
+        div.innerHTML = 
+        `
+        <a href="showpage.html">
+          <img src="${movie.Poster}" alt="${movie.Title}" /></a>
+      
+        `;
+        movieContainer.appendChild(div);
+      });
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(products.length / productsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayMovies();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        displayMovies();
+      }
+    }
+</script>
+
+
+
